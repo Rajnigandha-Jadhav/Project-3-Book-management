@@ -43,7 +43,7 @@ const createUser = async function (req, res) {
 
         const emailData = data.email;
         if (!isValid(emailData)) return res.status(400).send({ status: false, message: "email is mandatory in the request" })
-        if (!emailData.match(/^([a-zA-Z0-9_.]+@[a-z]+\.[a-z]{2,3})?$/)) return res.send({ status: false, message: "email is not valid" });
+        if (!emailData.match(/^([a-zA-Z0-9_.]+@[a-z]+\.[a-z]{2,3})?$/)) return res.status(400).send({ status: false, message: "email is not valid" });
         let uniquePhone = await userModel.findOne({ phone: phone })
         if (uniquePhone) return res.status(400).send({ status: false, message: "phone no. Already Exists." })
         let uniqueEmail = await userModel.findOne({ email: emailData })
@@ -53,7 +53,7 @@ const createUser = async function (req, res) {
         const passwordData = data.password;
         if (!isValid(passwordData)) return res.status(400).send({ status: false, message: "password is mandatory in the request" })
     
-        if (!isValidPassword(passwordData)) return res.status(406).send({status: false, message: "enter valid password"})
+        if (!isValidPassword(passwordData)) return res.status(400).send({status: false, message: "enter valid password"})
         let uniquePassword = await userModel.findOne({ password: passwordData })
         if (uniquePassword) return res.status(400).send({ status: false, message: "password Already Exists." })
 
